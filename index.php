@@ -18,6 +18,9 @@
                 case 'pembayaran':
                     include "pembayaran.php";
                     break;
+                case 'transaction':
+                    include "transaction.php";
+                    break;
                 default:
                     include "pos.php";
                     break;
