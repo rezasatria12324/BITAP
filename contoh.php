@@ -1,3 +1,102 @@
+
+<!-- ------------- Index.php ------------- -->
+<?php include "header.php"; ?>
+
+<!-- Wrapper -->
+<div class="wrapper">
+    <?php include "sidebar.php"; ?>
+
+    <!-- Content -->
+    <?php
+        if (isset($_GET['page'])) {
+            $pages = $_GET['page'];
+            switch ($pages) {
+                case 'product':
+                    include "product.php";
+                    break;
+                case 'member':
+                    include "member.php";
+                    break;
+                case 'pembayaran':
+                    include "pembayaran.php";
+                    break;
+                default:
+                    include "pos.php";
+                    break;
+            }
+        } else {
+            include "pos.php";
+        }
+    ?>
+
+    <script>
+        // Sidebar toggle functionality
+        $('#sidebarToggle').on('click', function (e) {
+            e.preventDefault();
+            $('#sidebar').toggleClass('active');  // Toggle sidebar visibility
+            $('#content').toggleClass('active');  // Adjust content area when sidebar is active
+        });
+    </script>
+
+
+<?php include "footer.php"; ?>
+
+
+
+<!-- ------------ sidebar.php --------------- -->
+<!-- Sidebar -->
+<nav id="sidebar" class="bg-dark">
+
+<div class="logo-wrapper">
+    <img src="images/bitap-blue.png" alt="Logo" class="img-fluid">
+    <p>Bitap</p>
+</div>
+
+<button type="button" id="sidebarToggle" class="btn btn-primary">
+    <i class="fas fa-chevron-circle-left"></i>
+</button>
+
+<ul class="list-unstyled components">
+    <li class="nav-item">
+        <a class="nav-link active" href="index.php?page=pos">
+            <i class="fas fa-cash-register"></i> POS
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="index.php?page=product">
+            <i class="fas fa-box"></i> Product
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="index.php?page=member">
+            <i class="fas fa-user"></i> Member
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#">
+            <i class="fas fa-exchange-alt"></i> Transaction
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#">
+            <i class="fas fa-chart-line"></i> Report
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="#">
+            <i class="fas fa-cog"></i> Setting
+        </a>
+    </li>
+</ul>
+
+</nav>
+
+<!-- ---------- header.php ------------ -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -282,3 +381,5 @@
     </style>
 </head>
 <body style="background-color:  #e0f2f1  !important;">
+
+
