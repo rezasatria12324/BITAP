@@ -15,6 +15,8 @@
 */
 -- Membuat database bitap
 -- gua edit yaa
+
+--editan ropi
 CREATE DATABASE IF NOT EXISTS `bitap` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Menggunakan database bitap
