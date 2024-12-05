@@ -24,34 +24,34 @@ $result = $conn->query($sql);
 ?>
 <!-- Main Content -->
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <h2 class="mt-4">Member</h2>
+    <h2 >Member</h2>
 
     <!-- Form Add Product -->
     <form class="mb-4" method="POST" enctype="multipart/form-data">
         <div class="row">
-            <div class="col-md-2 mb-3">
+            <div class="form-input">
                 <label for="id" class="form-label">ID</label>
                 <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID member" required>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="form-input">
                 <label for="name" class="form-label">Name Member</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter name member" required>
             </div>
-            <div class="col-md-2 mb-3">
+            <div class="form-input">
                 <label for="phone" class="form-label">Phone</label>
                 <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
             </div>
            
-            <div class="col-md-2 mb-3">
+            <div class="form-input">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address" required>
             </div>
-            <div class="col-md-2 mb-3">
+            <div class="form-input">
                 <label for="registered" class="form-label">registered</label>
                 <input type="date" class="form-control" id="registered" name="registered" placeholder="Enter register date" required>
             </div>
 
-            <div class="col-md-12">
+            <div class="button-submit">
                 <button type="submit" class="btn btn-primary" name="add_member">Add Member</button>
             </div>
         </div>
