@@ -28,18 +28,18 @@
 </head>
 <body>
 
-
+<!-- contoh -->
 <!-- Wrapper -->
 <div class="container">
     <div class="sidebar">
 
         <div class="header-sidebar">
-        <div class="logo-wrapper">
-            <img src="images/bitap-blue.png" alt="Logo" class="logo">
-            <span class="logo-title">BITAP</span>
-        </div>   
-    </div>
-    
+            <div class="logo-wrapper">
+                <img src="images/bitap-blue.png" alt="Logo" class="logo">
+                <span class="logo-title">BITAP</span>
+            </div>   
+        </div>
+
     <button type="button" id="sidebarToggle" class="toggle">
         <i class="fas fa-chevron-circle-left"></i>
     </button>
