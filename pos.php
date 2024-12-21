@@ -1,64 +1,88 @@
+
+<?php
+include "config.php";
+
+if (!isset($_SESSION['role'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$role = $_SESSION['role'];
+?>
 <div id="content">
             
-            <div class="container">
-                <div class="row">
-                    <div class="container custom-border-bottom pb-3">
-                        <h2 class="text-title">POS</h2>
-                    </div>
-                </div>
 
-                <div class="row mt-2 p-2 custom-border-bottom">
-                    <div class="col-md-4 d-flex align-items-center">
-                        <span style="font-weight: bolder; font-size: 20px; margin-right: 10px;">Items</span>
-                        <div class="custom-select-wrapper">
-                            <div class="custom-icon-left">
-                                <i class="fas fa-filter"></i> <!-- Ikon kiri -->
-                            </div>
-                            <select name="kategori" id="kategori" class="custom-select form-control">
-                                <option value="">Kategori</option>
-                                <option value="kategori1">Kategori 1</option>
-                                <option value="kategori2">Kategori 2</option>
-                                <option value="kategori3">Kategori 3</option>
+    <div class="container">
+        <div class="row mt-4">
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="card py-3 text-center">
+                    <h3 class="fw-bold mb-0" style="color: #0d6efd;">Point of Sale (POS)</h3>
+                </div>
+                
+                <div class="row mt-4">
+                    <!-- Filter Kategori dan Pencarian -->
+                    <div class="col-md-4">
+                        <label for="kategori" class="form-label fw-bold">Items</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-filter"></i>
+                            </span>
+                            <select class="form-select" id="kategori" name="kategori">
+                                <option value="">Pilih Kategori</option>
+                                <?php
+                                include "config.php";
+                                // Mengambil daftar kategori unik dari database
+                                $kategoriQuery = $conn->query("SELECT DISTINCT category FROM items");
+                                while ($row = $kategoriQuery->fetch_assoc()) {
+                                    echo "<option value='" . $row['category'] . "'>" . ucfirst($row['category']) . "</option>";
+                                }
+                                ?>
                             </select>
-                            <div class="custom-icon-right">
-                                <i class="fas fa-caret-down"></i> <!-- Ikon kanan -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 d-flex align-items-center">
-                        <div class="custom-input-wrapper">
-                            <div class="custom-icon-left">
-                                <i class="fas fa-search"></i> <!-- Ikon kiri (pencarian) -->
-                            </div>
-                            <input type="text" class="form-control custom-input" name="cari" placeholder="Cari...">
                         </div>
                     </div>
 
+                    <div class="col-md-4">
+                        <label for="search" class="form-label fw-bold">Search</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="search" placeholder="Cari...">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row mt-5">
-                <?php
-                    include "config.php";
-                    // Fetch data from the database
+                <!-- Produk yang akan difilter -->
+                <div class="row mt-5" id="products-container">
+                    <?php
+                    // Mengambil semua produk dari database
                     $result = $conn->query("SELECT * FROM items");
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                            // var_dump($row);
                     ?>
-                            <div id="product" class="card col-md-3"  data-diskon="<?= $row['discount']?>" data-kategori="<?= $row['category']?>" data-id="<?= $row['product_id']?>" data-name="<?= $row['name_item']?>" data-price="<?= $row['price']?>" data-image="<?= $row['image_path']?>" style="width: 18rem;margin-right:2px;">
-                                <center>
-                                    <img style="max-width:200px;" src="<?= $row['image_path']?>" class="card-img-top" alt="...">
-                                </center>
-                                <div class="card-body">
-                                    <h4 class="card-title"><?= $row['name_item']?></h4>
-                                    <span class="card-kategori text-secondary"><?= $row['category']?></span><br>
-                                    <span class="text-primary">Rp.<?= number_format($row['price'],0,',','.')?></span><br>
-                                    <center>
-                                        <button  class="btn btn-primary add-to-cart" style="padding-left: 30px;padding-right:30px;">Add</button>
-                                    </center>
+                        <div id="product" 
+                            class="card col-sm-6 col-md-4 col-lg-3 mb-2 product" 
+                            data-diskon="<?= $row['discount']?>" 
+                            data-kategori="<?= $row['category']?>" 
+                            data-id="<?= $row['product_id']?>" 
+                            data-name="<?= $row['name_item']?>" 
+                            data-price="<?= $row['price']?>" 
+                            data-image="<?= $row['image_path']?>" 
+                            style="width: 12rem; margin: 5px; padding: 5px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                            <img src="<?= $row['image_path']?>" 
+                                class="card-img-top img-fluid rounded-top" 
+                                alt="<?= $row['name_item']?>" 
+                                style="margin-top: 5px; height: 160px; object-fit: cover;">
+                            <div class="card-body" style="padding: 10px;">
+                                <h6 class="card-title" style="font-size: 0.9rem;"><?= $row['name_item']?></h6>
+                                <p class="card-text text-muted mb-1" style="font-size: 0.8rem;"><?= $row['category']?></p>
+                                <p class="text-primary fw-bold" style="font-size: 0.9rem;">Rp.<?= number_format($row['price'], 0, ',', '.')?></p>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-sm add-to-cart">Add to Cart</button>
                                 </div>
                             </div>
-                            
+                        </div>
                     <?php
                         }
                     } else {
@@ -66,99 +90,82 @@
                     }
                     ?>
                 </div>
-
             </div>
-            
-        </div>
 
-        <div class="row" style="background-color: white;width:20%;">
-            <div class="container">
-
-                <div class="row p-3" style="border-bottom: 1px solid grey;">
-                    <h4>Order Details</h4>
-                </div>
-
-                <div class="row pt-2">
-                    <span><b>Order Details</b></span>
-                </div>
-
-                <div class="row mb-5">
-                    <span><b>Items</b>  <span id="total-items" class="badge bg-primary"></span></span>
-
-                    <div id="detail-cart">
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="container">
-                        <div class="card p-3">
-                            <div class="row">
-                                <table style="width: 100%;font-size:12px;">
-                                    <tr>
-                                        <td>Subtotal</td>
-                                        <td>:Rp</td>
-                                        <td id="total-price" style="text-align: right;">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tax 5%</td>
-                                        <td>:Rp</td>
-                                        <td id="total-tax" style="text-align: right;">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Discount</td>
-                                        <td>:Rp</td>
-                                        <td id="total-discount" style="text-align: right;">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Amount</td>
-                                        <td>:Rp</td>
-                                        <td id="total-with-tax-discount" style="text-align: right;">0</td>
-                                    </tr>
-                                </table>
-                            </div>
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="right-sidebar bg-white shadow-sm py-4 p-2" style="position: sticky; top: 20px; height: 650px; overflow-y: auto; border-radius:10px; scrollbar-width:none;">
+                    <!-- Heading Section -->
+                    <h4 class="text-center border-bottom pb-3">Order Details</h4>
+                    
+                    <!-- Items Section -->
+                    <div class="py-2">
+                        <p class="fw-bold d-flex justify-content-between">
+                            Items 
+                            <span id="total-items" class="badge bg-primary">0</span>
+                        </p>
+                        <div id="detail-cart" class="border rounded p-2" style="min-height: 100px;">
+                            <!-- Cart details will be dynamically added here -->
                         </div>
-                        <button class="btn btn-sm btn-primary mt-2" id="checkout" style="width: 100%;">Continue</button>
+                    </div>
+
+                    <!-- Pricing Section -->
+                    <div class="card p-3 mt-4">
+                        <table class="table table-borderless table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Subtotal</td>
+                                    <td class="text-end" id="total-price">Rp 0</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax (5%)</td>
+                                    <td class="text-end" id="total-tax">Rp 0</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount</td>
+                                    <td class="text-end" id="total-discount">Rp 0</td>
+                                </tr>
+                                <tr class="fw-bold border-top">
+                                    <td>Total</td>
+                                    <td class="text-end" id="total-with-tax-discount">Rp 0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary w-100 mt-3" id="checkout">Continue</button>
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
 
         <!-- Modal untuk memilih atau mengisi member -->
         <!-- Modal untuk memilih member -->
         <div class="modal fade" id="memberModal" tabindex="-1" aria-labelledby="memberModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="memberModalLabel">Have Member ?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <form id="memberForm" class="d-flex justify-content-between w-100">
-                        <div class="col-md-6">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="memberModalLabel">Member Information</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="memberForm">
                             <div class="mb-3">
                                 <label for="memberSearch" class="form-label">ID Member</label>
                                 <input type="text" class="form-control" id="memberSearch" name="memberSearch">
                             </div>
-                        </div>
-                        <div class="col-md-4 d-flex align-items-center justify-content-center">
-                            <div class="mb-3">
-                                <label for="memberSearch" class="form-label">&nbsp;</label>
-                                <button class="btn btn-sm btn-success">TAP MEMBER CARD</button>
-                            </div>
-                        </div>
-                    </form>
+                            <button type="button" class="btn btn-success w-100">Tap Member Card</button>
+                        </form>
+                        <div id="searchResults" class="mt-3"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="Skip">Next</button>
+                    </div>
                 </div>
-                <div id="searchResults"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" id="Skip">Skip</button>
             </div>
         </div>
-    </div>
-</div>
+
 
 
 <script>
@@ -356,4 +363,40 @@ $(document).ready(function () {
     });
 });
 
+</script>
+
+<!-- Script untuk filter dan search -->
+<script>
+    // Ambil elemen filter dan search
+    const kategoriSelect = document.getElementById('kategori');
+    const searchInput = document.getElementById('search');
+    const productsContainer = document.getElementById('products-container');
+    
+    // Fungsi untuk memfilter produk berdasarkan kategori dan search
+    function filterProducts() {
+        const kategoriValue = kategoriSelect.value.toLowerCase();
+        const searchValue = searchInput.value.toLowerCase();
+
+        // Ambil semua produk
+        const products = productsContainer.querySelectorAll('.product');
+
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+            const productCategory = product.getAttribute('data-kategori').toLowerCase();
+
+            // Cek apakah produk sesuai dengan kategori dan search
+            if (
+                (kategoriValue === '' || productCategory.includes(kategoriValue)) &&
+                (searchValue === '' || productName.includes(searchValue))
+            ) {
+                product.style.display = 'block';  // Tampilkan produk
+            } else {
+                product.style.display = 'none';  // Sembunyikan produk
+            }
+        });
+    }
+
+    // Event listener untuk kategori dan search
+    kategoriSelect.addEventListener('change', filterProducts);
+    searchInput.addEventListener('input', filterProducts);
 </script>

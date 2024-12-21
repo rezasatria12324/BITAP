@@ -1,29 +1,205 @@
-.sidebar {
-  height: 100vh;
-  padding-top: 20px;
-  background-color: #2e81ff; /* Warna background */
-  border-right: 2px solid #e0e0e0; /* Tambahkan garis di sisi kanan */
+/* Styling dasar untuk sidebar */
+#sidebar {
+  width: 250px;
+  transition: width 0.3s ease; /* Animasi untuk perubahan lebar */
+  background-color: #2e81ff; /* Warna latar belakang sidebar */
+  color: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
 }
 
-.sidebar .nav-link {
-  color: #333;
+#sidebar.collapsed {
+  width: 100px; /* Lebar sidebar saat collapsed */
+}
+
+#sidebar .sidebar-text {
+  display: inline-block;
+  transition: opacity 0.3s ease; /* Animasi untuk teks */
+  margin-left: 15px;
+}
+
+/* Teks di dalam sidebar yang hilang saat sidebar di-collapse */
+#sidebar.collapsed .sidebar-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap; /* Menyembunyikan teks */
+  transition: opacity 0.3s ease;
+}
+
+/* Styling gambar logo */
+#sidebar img {
+  width: 75px;
+  height: auto;
+  transition: width 0.3s ease;
+}
+
+#sidebar.collapsed img {
+  width: 60px; /* Ukuran gambar logo lebih kecil saat collapsed */
+}
+
+#sidebar .logo-wrapper {
   display: flex;
   align-items: center;
-  padding: 10px;
-  transition: background-color 0.3s;
+  justify-content: center;
+  padding: 15px;
 }
 
-.sidebar .nav-link i {
-  margin-right: 10px; /* Spasi antara ikon dan teks */
-  font-size: 1.2rem; /* Ukuran ikon */
+#sidebar .logo-wrapper p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #0d6efd;
 }
 
-.sidebar .nav-link:hover {
-  background-color: #e9ecef; /* Warna saat hover */
+/* Styling menu sidebar */
+#sidebar ul {
+  padding-left: 0;
+}
+
+#sidebar ul li {
+  padding: 5px 15px;
+  list-style: none;
+}
+
+#sidebar ul li a {
+  color: #bbb;
   text-decoration: none;
+  display: block;
+  font-size: 22px;
+  padding: 15px;
 }
 
-.sidebar .text-center img {
-  border-radius: 10px; /* Tambahkan jika ingin sudut membulat */
-  margin-bottom: 15px; /* Spasi antara logo dan menu navigasi */
+#sidebar ul li a:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/* Sidebar toggle button */
+#sidebarToggle {
+  position: absolute;
+  top: 60px;
+  right: -30px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #0d6efd;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Responsif sidebar */
+@media (max-width: 768px) {
+  #sidebar {
+    width: 100%;
+    position: fixed;
+    left: -100%;
+  }
+
+  #sidebar.active {
+    left: 0;
+  }
+
+  #content {
+    margin-left: 0;
+  }
+}
+
+/* Main content adjustments */
+#content {
+  /* margin-left: 250px; */
+  width: 100%;
+  padding: 20px;
+  margin-left: 250px; /* Margin awal saat sidebar penuh */
+  /* transition: margin-left 0.3s ease; */
+}
+
+/* Sidebar yang aktif */
+#sidebar.active {
+  width: 100px; /* Lebar sidebar saat toggle */
+}
+
+#content.active {
+  margin-left: 100px; /* Margin saat sidebar collapsed (80px saat sidebar aktif) */
+}
+
+/* Wrapper untuk konten */
+.wrapper {
+  display: flex;
+  height: 100vh;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-header h3 {
+  color: #fff;
+  font-size: 1.5em;
+}
+
+/* Menyembunyikan teks untuk ikon menu saat sidebar collapsed */
+#sidebar.collapsed ul li a {
+  display: flex;
+  justify-content: center;
+}
+
+#sidebar.collapsed ul li a span {
+  display: none; /* Menyembunyikan teks saat sidebar collapsed */
+}
+
+/* Wrapper untuk select dan input */
+.custom-select-wrapper,
+.custom-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Styling select dan input */
+.custom-select,
+.custom-input {
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  background-color: white;
+}
+
+.custom-select:focus,
+.custom-input:focus {
+  border-color: #2e81ff;
+  outline: none;
+}
+
+/* Styling ikon */
+.custom-icon-left,
+.custom-icon-right {
+  color: #ccc;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.custom-icon-left {
+  left: 10px;
+}
+
+.custom-icon-right {
+  right: 10px;
+}
+
+/* Styling untuk input dan select */
+.custom-select-wrapper:hover .custom-select,
+.custom-input-wrapper:hover .custom-input {
+  border-color: #007bff;
 }

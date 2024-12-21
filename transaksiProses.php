@@ -13,7 +13,7 @@ $id_member = isset($_POST['member']['id']) ? intval($_POST['member']['id']) : NU
 $today = date("Ymd");
 $transactionIdPrefix = $today;
 
-$sqlMaxId = "SELECT MAX(CAST(id_transaksi AS UNSIGNED)) AS last_number 
+$sqlMaxId = "SELECT MAX(CAST(SUBSTRING(id_transaksi, 9) AS UNSIGNED)) AS last_number 
              FROM transaksi WHERE id_transaksi LIKE '$today%'";
 $resultMaxId = $conn->query($sqlMaxId);
 

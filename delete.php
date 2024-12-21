@@ -1,17 +1,27 @@
 <?php
 include 'config.php';
 
-// Ambil ID produk dari URL
-$product_id = $_GET['id'];
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
 
-// Hapus produk dari database
-$sql = "DELETE FROM items WHERE product_id = '$product_id'";
+    // Cek apakah ID yang akan dihapus ada di database
+    $sql_check = "SELECT * FROM items WHERE product_id = '$delete_id'";
+    $result = $conn->query($sql_check);
 
-if ($conn->query($sql) === TRUE) {
-    echo "Product deleted successfully";
-    header("Location: product.php"); // Kembali ke halaman utama
-    exit;
+    if ($result->num_rows > 0) {
+        // Hapus data jika ditemukan
+        $sql_delete = "DELETE FROM items WHERE product_id = '$delete_id'";
+        if ($conn->query($sql_delete) === TRUE) {
+            header("Location: index.php?page=product&message=success");
+        } else {
+            header("Location: index.php?page=product&message=error");
+        }
+    } else {
+        header("Location: index.php?page=product&message=not_found");
+    }
+    exit();
 } else {
-    echo "Error deleting record: " . $conn->error;
+    header("Location: index.php?page=product&message=invalid_request");
+    exit();
 }
 ?>
